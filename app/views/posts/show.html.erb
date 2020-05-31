@@ -1,0 +1,42 @@
+<h1><%= @post.title %></h1>
+<p><%= @post.body %></p>
+<hr>
+<%= link_to 'Back', posts_path, :class => 'btn btn-outline-secondary'%>
+<%= link_to 'Edit', edit_post_path(@post), :class => 'btn btn-outline-secondary'%>
+<%= link_to 'Delete', post_path(@post), method: :delete, data: {confirm: "Do you REALLY want to do this?"}, :class => 'btn btn-outline-danger'%>
+
+<hr>
+
+<h2>Comments</h2>
+<% @post.comments.each do |comment| %>
+  <div class="alert alert-light">
+    <p><strong><%= comment.username %></strong>: <%= comment.body%></p>
+    <p>
+    <%= link_to 'Destroy Comment', [comment.post, comment],
+                 method: :delete,
+                 data: { confirm: 'Are you sure?' } %>
+    </p>
+  </div>
+
+<% end %>
+
+<hr>
+
+    
+
+<h2>Add Comment</h2>
+<%= form_with(model: [ @post, @post.comments.build ], local: true) do |form| %>
+  <p>
+    <%= form.label :username %><br>
+    <%= form.text_field(:username, {:class => 'form-control'}) %>
+  </p>
+  <p>
+    <%= form.label :body %><br>
+    <%= form.text_area(:body, {:class => 'form-control'}) %>
+  </p>
+  <p>
+    <%= form.submit("Submit Comment", {:class => 'btn btn-outline-secondary'}) %>
+  </p>
+
+
+<% end %>
